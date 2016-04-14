@@ -1,0 +1,52 @@
+<html>
+    <head>  
+    	<meta charset="UTF-8">
+      <script src="js/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+
+      <script type="text/javascript" src="js/puzzle.js"></script>
+      <link href='https://fonts.googleapis.com/css?family=Lato:100,300,900,400' rel='stylesheet' type='text/css'>
+      <link href="css/bootstrap.css" rel="stylesheet">
+      <link rel="stylesheet" href="css/puzzle.css" type="text/css"/>
+      <title>puzzle</title>
+    </head>
+    
+    <body>
+
+      <nav>
+            <a href="main.html" class="mainPageLink"><h2>Puzzle game</h2></a>
+            <div id="leftSideNavbar">
+              <a href="#" class="save" title="restart your game">Restart</a>
+              <a href="#" class="save" title="start a new game">New Game</a>
+              <a href="#" class="save" title="save your game">Save</a>
+            </div>
+      </nav>
+      <div id="header">
+        <header>
+          <div class="innerHeader" id="innerHeader">
+            <ul class="level">
+              <li>Easy</li>
+              <li>Medium</li>
+              <li>Extrem</li>
+              <li>Moves: <span id="countMoves"></span></li>
+              <li>Time: <span id="timer"></span></li>
+            </ul>
+          </div>
+        </header>
+        <div class="middle">
+          <div class="innerSection"></div>
+        </div>
+      </div>
+      <div class="slider" id="slider">
+        <a href="#" id="prev">Previous</a>
+        <a href="#" id="next">Next</a>
+        <ul class="slides">
+          <li id="1"><a href="main.html?image=1"><img src="images/puzzle1.jpg" class="puzzle_img"/></a></li>
+          <li id="2"><a href="main.html?image=2"><img src="images/puzzle2.jpg" class="puzzle_img"/></a></li>
+          <li id="3"><a href="main.html?image=3"><img src="images/puzzle3.jpg" class="puzzle_img"/></a></li>
+          <li id="0"><a href="main.html?image=0"><img src="images/puzzle0.jpg" class="puzzle_img"/></a></li>
+        </ul>
+      </div>
+      <div class="game-field" id="gameField"></div>
+  </body>
+</html>

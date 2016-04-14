@@ -1,0 +1,50 @@
+<html>
+    <head>  
+    	<meta charset="UTF-8">
+      <script src="js/jquery.min.js"></script>
+      <script src="jquery.mobile-1.4.2.js"></script> 
+      <script src="js/bootstrap.min.js"></script>
+
+      <script type="text/javascript" src="js/puzzle.js"></script>
+
+       <link href="css/bootstrap.css" rel="stylesheet">
+      <link rel="stylesheet" href="css/puzzle.css" type="text/css"/>
+      <title>puzzle</title>
+    </head>
+    
+    <body>
+      <nav>
+            <a href="main.html"><h2>Puzzle game</h2></a>
+            <div id="leftSideNavbar">
+              <a href="#" class="save" title="restart your game">Restart</a>
+              <a href="#" class="save" title="start a new game">New Game</a>
+              <a href="#" class="save" title="save your game">Save</a>
+            </div>
+      </nav>
+      <div>
+        <header>
+          <div id="app" role="application">          
+          <div class="innerHeader">
+            <ul class="level">
+              <li>Easy</li>
+              <li>Medium</li>
+              <li>Extrem</li>
+              <li>Moves: <span id="countMoves"></span></li>
+              <li>Time: <span id="timer"></span></li>
+            </ul>
+          </div>
+        </div>  
+        </header>
+      </div>
+      <div class="game-field" id="gameField">
+          <!-- <div id="drop_0" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <img class="puzzle-card" src="images/pic1/tile0_0.jpg" id="drag_0" draggable="true" ondragstart="drag(event)"/>
+          </div>
+          <div id="drop_1" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <img class="puzzle-card" src="images/pic1/tile0_1.jpg" id="drag_1" draggable="true" ondragstart="drag(event)"/>
+          </div> ...
+        -->
+      </div>
+
+  </body>
+</html>
