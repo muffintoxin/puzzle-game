@@ -1,0 +1,86 @@
+<html>
+    <head>  
+    	<meta charset="UTF-8">
+      <script src="js/jquery-3.0.0.min.js"></script>
+      <script src="js/jquery-ui.min.js"></script>
+      <script src="js/jquery.ui.touch-punch.min.js"></script>
+      <script src="js/bootstrap.min.js"></script> 
+
+      <script type="text/javascript" src="js/puzzle.js"></script>
+      <link href='https://fonts.googleapis.com/css?family=Lato:100,300,900,400' rel='stylesheet' type='text/css'>
+      <link href="css/bootstrap.css" rel="stylesheet">
+      <link rel="stylesheet" href="css/puzzle.css" type="text/css"/>
+      <title>puzzle</title>
+    </head>
+    
+    <body>
+
+      <nav>
+            <a href="main.html" class="mainPageLink"><h2>Puzzle game</h2></a>
+            <div id="leftSideNavbar">
+              <a href="#" class="save button button--small" title="restart your game" id="restartButton">Restart</a>
+              <a href="#" class="save button button--small" title="start a new game" id="newGameButton">New Game</a>
+              <a href="#" class="save button button--small" title="save your game" id="statisticsButton">Statistics</a>
+            </div>
+      </nav>
+      <div id="header">
+        <header>
+          <div class="innerHeader" id="innerHeader">
+            <ul class="level">
+              <li class="button" id="easyLevelButton">Easy</li>
+              <li class="button" id="mediumLevelButton">Medium</li>
+              <li class="button" id="hardLevelButton">Hard</li>
+              <li class="button" id="extremeLevelButton">Extreme</li>
+              <!-- <li>Moves: <span id="countMoves"></span></li>     -->          
+            </ul>
+          </div>
+        </header>
+      </div>
+      <div class="slider" id="slider">
+        <h3>Choose a picture!</h3>
+        <a href="#" id="prev" class="button--icon"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        <a href="#" id="next" class="button--icon"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        <ul class="slides">
+          <li id="1"><a href="main.html?image=1"><img src="images/puzzle1.jpg" class="puzzle_img"/></a></li>
+          <li id="2"><a href="main.html?image=2"><img src="images/puzzle2.jpg" class="puzzle_img"/></a></li>
+          <li id="3"><a href="main.html?image=3"><img src="images/puzzle3.jpg" class="puzzle_img"/></a></li>
+          <li id="0"><a href="main.html?image=0"><img src="images/puzzle0.jpg" class="puzzle_img"/></a></li>
+        </ul>
+      </div>
+      <div class="game-field" id="gameField"></div>
+      <!-- Modal -->
+      <div class="modal fade bigform-content" id="dialog_confirm_map" tabindex="-1" role="dialog" aria-labelledby="dialog_confirm_mapLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-body">
+                     
+                      <form>
+                        <div class="form-group">
+                          <label for="user-name" class="control-label" placeholder="enter your name here" autofocus><h4>Type your name for the statistics:</h4></label>
+                          <input type="text" class="form-control" id="user-name">
+                        </div>
+                      </form> 
+                      <p>You completed the puzzle with <span id="countMovesModal"></span> moves in <span id="timerModal"></span>s</p>
+                  </div>
+                  <div class="modal-footer"> 
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No, thanks</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="saveResultsButton">Save results</button>
+                  </div>
+              </div>
+              <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <div class="stat" id="statistics">
+        
+      </div>
+      <div class="counter" id="counter">
+        <div>Time: <span id="timer"></span></div>
+        <div class="moves">Moves: <span id="countMoves"></span></div>
+      </div>
+      <footer>
+        <div>Photos: https://unsplash.com/</div>
+      </footer>
+  </body>
+</html>
