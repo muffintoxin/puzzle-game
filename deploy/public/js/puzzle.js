@@ -51,9 +51,19 @@ function drop(ev) {
     //buffer position of B
     var dropPos = cardB.offset();
     //move B to initial position of A
-    cardB.offset(draggedCardInitPos);
+    //cardB.offset(draggedCardInitPos);
     //move A to old position of B
-    cardA.offset(dropPos);
+    //cardA.offset(dropPos);
+
+	var dropOfA = cardA[0].parentNode;
+	var dropOfB = cardB[0].parentNode;
+	dropOfB.appendChild(cardA[0]);
+	dropOfA.appendChild(cardB[0]);
+
+	//reset styles set by jquery ui during dragging
+	cardA.css('position', '');
+	cardA.css('top', '');
+	cardA.css('left', '');
 
     //-------------------------------------------------
 
