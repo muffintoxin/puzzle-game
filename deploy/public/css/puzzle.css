@@ -1,5 +1,13 @@
 @import url("https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
-
+html {
+	position: relative;
+	min-height: 100%;
+}
+body {
+	display: table;
+    width: 100%;
+	margin-bottom: 60px;
+}
 * {
 	margin: 0;
 	padding: 0;
@@ -19,6 +27,9 @@ body::after {
 	right: 0;
 	position: absolute;
 	z-index: -1;   
+}
+.page-row {
+	display: table-row;
 }
 nav {
 	padding: 5px 10px;
@@ -134,13 +145,13 @@ nav a:hover {
 .game-field div {
 	display: inline-block;
 }
-footer {	
-  position: fixed;
-  padding: 10px;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  font-size: 75%;
+footer {
+	position: absolute;	
+  	/*padding-top: 60px;*/
+  	bottom: 0;
+	width: 100%;
+	height: 60px;
+  	font-size: 75%;
 }
 .glyphicon {
     font-size: 30px;
@@ -205,10 +216,9 @@ footer {
     margin-top:10px;
 }
 .stat {
-	margin: 30px auto;
+	margin: 120px auto;
 	width: 840px;
 	height: 540px;
-	border: 5px solid black;
 }
 .moves {
 	margin-left: 50px;
@@ -216,13 +226,15 @@ footer {
 .stat li {
 	display: block;
 	list-style-type:none;
-	margin: 10px;
+	height: 35px;
+    font-weight: 300;
+    padding: 5px;
 }
-.stat li:nth-child(odd) {
-	background-color: #FF6633;
+tbody tr:nth-child(odd) {
+	background-color: rgb(255, 239, 234);
 }
-.stat li:nth-child(even) {
-	background-color: #008B8B;	
+tbody tr:nth-child(even) {
+	background-color: rgb(255,193,173);
 }
 .stat ul {
 }
@@ -233,3 +245,74 @@ footer {
 .dragging {
 	z-index: 1000;
 }
+.titleStatistic {
+	margin: 35px auto;
+}
+table {
+	width: 100%;	
+}
+table,td,th {	
+}
+th {
+    height: 40px;
+}
+th,td {
+	padding: 15px;
+	border-bottom: 1px solid #ddd;
+}
+tbody tr:hover {
+	background-color: #f5f5f5
+}
+@media screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	thead tr { 
+			position: absolute;
+			top: -9999px;
+			left: -9999px;
+	}
+	tr { 
+		border: 1px solid #ccc; 
+	}
+		
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 20%; 
+	}
+	td:before { 
+			/* Now like a table header */
+			position: absolute;
+			/* Top/left values mimic padding */
+			top: 6px;
+			left: 6px;
+			width: 25%; 
+			padding-right: 5px; 
+			white-space: nowrap;
+	}
+	td:nth-of-type(1):before { content: attr(data-th); }
+		td:nth-of-type(2):before { content: attr(data-th); }
+		td:nth-of-type(3):before { content: attr(data-th); }
+		td:nth-of-type(4):before { content: attr(data-th); }
+		td:nth-of-type(5):before { content: attr(data-th); }
+}
+
+/*@media screen and (max-width: 800px) {
+  tr { 
+    display: flex; 
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0.5em 0;
+    border: 1px solid rgba(3,3,3,0.2);
+  }
+  td, th {
+    flex: 1 1 150px;
+    border: 0.5px solid rgba(3,3,3,0.2);
+  }
+}*/

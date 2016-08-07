@@ -5,7 +5,9 @@ var timerId = setInterval(myTimer, 1000);
 var timeCount = '';
 var user =$('#user-name').val();
 var $draggedCard = null;
-var draggedCardInitPos = null;
+var bestUsersCounter = 0;
+var draggedCardChanged = true;
+var $oldDraggedCard = null;
 
 function myTimer() {
     timer++;
@@ -33,56 +35,6 @@ function myStopFunction() {
 //     ev.dataTransfer.setData("text", ev.target.id);
 // }
 
-function drop(ev) {
-
-    /*ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    var drag1 = ev.target;
-    var drop1 = document.getElementById(data).parentNode;
-    var drop2 = drag1.parentNode;
-    drop2.appendChild(document.getElementById(data));
-    drop1.appendChild(drag1);
-    */
-
-    //---- scenario: card A was dropped on card B -----
-
-    var cardA = $draggedCard;
-    var cardB = $(ev.target);
-    //buffer position of B
-    var dropPos = cardB.offset();
-    //move B to initial position of A
-    //cardB.offset(draggedCardInitPos);
-    //move A to old position of B
-    //cardA.offset(dropPos);
-
-	var dropOfA = cardA[0].parentNode;
-	var dropOfB = cardB[0].parentNode;
-	dropOfB.appendChild(cardA[0]);
-	dropOfA.appendChild(cardB[0]);
-
-	//reset styles set by jquery ui during dragging
-	cardA.css('position', '');
-	cardA.css('top', '');
-	cardA.css('left', '');
-
-    //-------------------------------------------------
-
-    counter++;
-    $('#countMoves').text(counter);
-
-    if (checkIfComplete()) {
-    	myStopFunction();
-
-    	$('#dialog_confirm_map').modal();
-    	$('.modal-backdrop').appendTo('.game-field');
-        $('body').removeClass();
-
-    	$('#countMovesModal').text(counter); 	
-    	$('#timerModal').text(timer);		
-    	//alert('You completed the puzzle with '+counter+' moves in '+timer+'s');
-    }
-    
-}
 
 function checkIfComplete() {
 	var result = true;
@@ -201,15 +153,18 @@ $(document).ready(function() {
 				 //    '</div>';
 			}
 			$('#gameField').html(gameFieldHtml);
+
+			
 			//make cards move back if they don't hit another card
 			$('.js-draggable').draggable({
 				revert: 'invalid',
-				start: function(event, ui){
+				start: function(){
+					draggedCardChanged = $draggedCard == null || !$draggedCard.is($(this));
+					$oldDraggedCard = $draggedCard;
 					$draggedCard = $(this);
 					$draggedCard.addClass('dragging');
-					draggedCardInitPos = $draggedCard.offset();
 				},
-				stop: function(event, ui){
+				stop: function(){
 					$(this).removeClass('dragging');
 				}
 			});
@@ -221,20 +176,100 @@ $(document).ready(function() {
 		}
 	}
 
+
+function drop(ev) {
+
+    /*ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    var drag1 = ev.target;
+    var drop1 = document.getElementById(data).parentNode;
+    var drop2 = drag1.parentNode;
+    drop2.appendChild(document.getElementById(data));
+    drop1.appendChild(drag1);
+    */
+
+    //---- scenario: card A was dropped on card B -----
+
+    var cardA = $draggedCard;
+    var cardB = $(ev.target);
+
+	var dropOfA = cardA[0].parentNode;
+	var dropOfB = cardB[0].parentNode;
+	dropOfB.appendChild(cardA[0]);
+	dropOfA.appendChild(cardB[0]);
+
+	//reset styles set by jquery ui during dragging
+		cardA.css('position', '');
+		cardA.css('top', '');
+		cardA.css('left', '');
+	
+
+    //-------------------------------------------------
+
+    counter++;
+    $('#countMoves').text(counter);
+
+    if (checkIfComplete()) {
+    	myStopFunction();
+
+    	$('#dialog_confirm_map').modal();
+    	$('.modal-backdrop').appendTo('.game-field');
+        $('body').removeClass();
+
+    	$('#countMovesModal').text(counter); 	
+    	$('#timerModal').text(timer);		
+    	//alert('You completed the puzzle with '+counter+' moves in '+timer+'s');
+    }
+    
+}
 	function listOfTheBest(){
 		$.get('/scores', function(scoresFromServer, status){
 			//alert("Data: " + data + "\nStatus: " + status);
-			usersScores = scoresFromServer.userScores;
-
-			var statisticsFieldHtml = '<ul>';
+			usersScores = scoresFromServer.userScores;	
+			
+			var statisticsFieldHtml = '';
 
 				usersScores.forEach(function(score){
-					statisticsFieldHtml += '<li class="squareStat">User: '+score.username+' Level: '+gameConfig.levels[currentLevel].level+' Score: '+score.steps+' Time: '+score.time+' </li>'
+					bestUsersCounter++;
+					statisticsFieldHtml += '<tr><td data-th="#">'+bestUsersCounter+'</td><td data-th="User">'+score.username+'</td><td data-th="Level">'+gameConfig.levels[currentLevel].level+'</td><td data-th="Steps">'+score.steps+'</td><td data-th="Time">'+score.time+'</td></tr>'
 				});
-				statisticsFieldHtml += '</ul>'
-			
+				/*statisticsFieldHtml += '</tr>';
+
+			/*var statisticsFieldHtml = '<ul>';
+
+				usersScores.forEach(function(score){
+					bestUsersCounter++;
+					statisticsFieldHtml += '<li class="squareStat">'+bestUsersCounter+'   '+score.username+'  Level: '+gameConfig.levels[currentLevel].level+'  Score: '+score.steps+'  Time: '+score.time+' </li>'
+				});
+				statisticsFieldHtml += '</ul>';*/
+
+			// <div class="container">
+			// <div class="row">
+			// <table>
+			// 	<thead>
+			// 		<tr class="">
+			// 			<td class=""></td>
+			// 			<td class="">User</td>
+			// 			<td class="">Level</td>
+			// 			<td class="">Steps</td>
+			// 			<td class="">Time</td>
+			// 		</tr>
+			// 	</thead>
+
+			// 	<tbody>
+			// 		<tr class="">
+			// 			<td class="">bestUsersCounter</td>
+			// 			<td class="">score.username</td>
+			// 			<td class="">gameConfig.levels[currentLevel].level</td>
+			// 			<td class="">score.steps</td>
+			// 			<td class="">score.time</td>
+			// 		</tr>
+			// 	</tbody>
+			// </table>
+			// </div>
+			// </div>
 						
-			$('#statistics').html(statisticsFieldHtml);
+			$('#tableBody').html(statisticsFieldHtml);
 
 		});
 	}
