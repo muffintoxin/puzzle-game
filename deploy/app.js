@@ -14,6 +14,8 @@ var bestListScore = { userScores:[
 ]
 };
 
+console.log('restarted with new app.js');
+
 app.use(express.static(__dirname + "/public"));
 
 // MongoClient.connect(url, function (err, db) {
