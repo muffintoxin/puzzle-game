@@ -221,7 +221,7 @@ function drop(ev) {
     	//alert('You completed the puzzle with '+counter+' moves in '+timer+'s');
     }
     
-}
+}//test for hook
 	function listOfTheBest(){
 		$.get('/scores', function(scoresFromServer, status){
 			//alert("Data: " + data + "\nStatus: " + status);
