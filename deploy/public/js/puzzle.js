@@ -8,6 +8,8 @@ var $draggedCard = null;
 var bestUsersCounter = 0;
 var draggedCardChanged = true;
 var $oldDraggedCard = null;
+var timeStatus = true;
+var stepsStatus = true;
 
 function myTimer() {
     timer++;
@@ -176,62 +178,60 @@ $(document).ready(function() {
 		}
 	}
 
+	function drop(ev) {
 
-function drop(ev) {
+	    /*ev.preventDefault();
+	    var data = ev.dataTransfer.getData("text");
+	    var drag1 = ev.target;
+	    var drop1 = document.getElementById(data).parentNode;
+	    var drop2 = drag1.parentNode;
+	    drop2.appendChild(document.getElementById(data));
+	    drop1.appendChild(drag1);
+	    */
 
-    /*ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    var drag1 = ev.target;
-    var drop1 = document.getElementById(data).parentNode;
-    var drop2 = drag1.parentNode;
-    drop2.appendChild(document.getElementById(data));
-    drop1.appendChild(drag1);
-    */
+	    //---- scenario: card A was dropped on card B -----
 
-    //---- scenario: card A was dropped on card B -----
+	    var cardA = $draggedCard;
+	    var cardB = $(ev.target);
 
-    var cardA = $draggedCard;
-    var cardB = $(ev.target);
+		var dropOfA = cardA[0].parentNode;
+		var dropOfB = cardB[0].parentNode;
+		dropOfB.appendChild(cardA[0]);
+		dropOfA.appendChild(cardB[0]);
 
-	var dropOfA = cardA[0].parentNode;
-	var dropOfB = cardB[0].parentNode;
-	dropOfB.appendChild(cardA[0]);
-	dropOfA.appendChild(cardB[0]);
+		//reset styles set by jquery ui during dragging
+			cardA.css('position', '');
+			cardA.css('top', '');
+			cardA.css('left', '');
+		
 
-	//reset styles set by jquery ui during dragging
-		cardA.css('position', '');
-		cardA.css('top', '');
-		cardA.css('left', '');
-	
+	    //-------------------------------------------------
 
-    //-------------------------------------------------
+	    counter++;
+	    $('#countMoves').text(counter);
 
-    counter++;
-    $('#countMoves').text(counter);
+	    if (checkIfComplete()) {
+	    	myStopFunction();
 
-    if (checkIfComplete()) {
-    	myStopFunction();
+	    	$('#dialog_confirm_map').modal();
+	    	$('.modal-backdrop').appendTo('.game-field');
+	        $('body').removeClass();
 
-    	$('#dialog_confirm_map').modal();
-    	$('.modal-backdrop').appendTo('.game-field');
-        $('body').removeClass();
+	    	$('#countMovesModal').text(counter); 	
+	    	$('#timerModal').text(timer);		
+	    	//alert('You completed the puzzle with '+counter+' moves in '+timer+'s');
+	    }
+	}
 
-    	$('#countMovesModal').text(counter); 	
-    	$('#timerModal').text(timer);		
-    	//alert('You completed the puzzle with '+counter+' moves in '+timer+'s');
-    }
-    
-}
-	function listOfTheBest(){
-		$.get('/scores', function(scoresFromServer, status){
-			//alert("Data: " + data + "\nStatus: " + status);
-			usersScores = scoresFromServer.userScores;	
+	function generateListOfTheBest(scoresFromServer){
+		bestUsersCounter = 0;
+			usersScores = scoresFromServer;	
 			
 			var statisticsFieldHtml = '';
 
 				usersScores.forEach(function(score){
 					bestUsersCounter++;
-					statisticsFieldHtml += '<tr><td data-th="#">'+bestUsersCounter+'</td><td data-th="User">'+score.username+'</td><td data-th="Level">'+gameConfig.levels[currentLevel].level+'</td><td data-th="Steps">'+score.steps+'</td><td data-th="Time">'+score.time+'</td></tr>'
+					statisticsFieldHtml += '<tr><td data-th="#">'+bestUsersCounter+'</td><td data-th="User">'+score.name+'</td><td data-th="Level">'+gameConfig.levels[currentLevel].level+'</td><td data-th="Steps">'+score.steps+'</td><td data-th="Time">'+score.time+'s</td></tr>'
 				});
 				/*statisticsFieldHtml += '</tr>';
 
@@ -242,36 +242,17 @@ function drop(ev) {
 					statisticsFieldHtml += '<li class="squareStat">'+bestUsersCounter+'   '+score.username+'  Level: '+gameConfig.levels[currentLevel].level+'  Score: '+score.steps+'  Time: '+score.time+' </li>'
 				});
 				statisticsFieldHtml += '</ul>';*/
-
-			// <div class="container">
-			// <div class="row">
-			// <table>
-			// 	<thead>
-			// 		<tr class="">
-			// 			<td class=""></td>
-			// 			<td class="">User</td>
-			// 			<td class="">Level</td>
-			// 			<td class="">Steps</td>
-			// 			<td class="">Time</td>
-			// 		</tr>
-			// 	</thead>
-
-			// 	<tbody>
-			// 		<tr class="">
-			// 			<td class="">bestUsersCounter</td>
-			// 			<td class="">score.username</td>
-			// 			<td class="">gameConfig.levels[currentLevel].level</td>
-			// 			<td class="">score.steps</td>
-			// 			<td class="">score.time</td>
-			// 		</tr>
-			// 	</tbody>
-			// </table>
-			// </div>
-			// </div>
 						
 			$('#tableBody').html(statisticsFieldHtml);
+	}
 
+	function listOfTheBest(){
+		$.get('/scores', function(scoresFromServer, status){
+			//alert("Data: " + data + "\nStatus: " + status);
+			generateListOfTheBest(scoresFromServer);
+			
 		});
+		timeStatus = true;
 	}
 
 	function showStatictics(){
@@ -283,7 +264,14 @@ function drop(ev) {
 		$('#slider').hide();
 	}
 
-
+	function IconHide(status, row) {		
+		$('span[class*=glyphicon-sort-by-attributes]').addClass("hide");
+		if (status) {
+			$(row+' .glyphicon-sort-by-attributes').removeClass("hide");
+		} else {
+			$(row+' .glyphicon-sort-by-attributes-alt').removeClass("hide");
+		}
+	}	
 
 	$('#restartButton').click(function(){
 		initGame();
@@ -310,7 +298,7 @@ function drop(ev) {
 	});
 
 	$('#newGameButton').click(function(){
-		$('#slider').show();
+		$('#slider').show(); 
 		$('#header').hide();
 		$('#gameField').hide();
 		$('#counter').hide();
@@ -318,17 +306,38 @@ function drop(ev) {
 	});
 
 	$('#statisticsButton').click(function(){
-		showStatictics();	
+		showStatictics();
+	});
+
+	$('#tableLevelRow').click(function() {
+		
+	});
+
+	$('#tableStepsRow').click(function() {		
+		stepsStatus = !stepsStatus;		
+		$.get('/scores/steps/'+stepsStatus, function(scoresFromServer, status){
+			generateListOfTheBest(scoresFromServer);
+		});
+		IconHide(stepsStatus, '#tableStepsRow');
+	});
+
+
+	$('#tableTimeRow').click(function() {
+		timeStatus = !timeStatus;
+		$.get('/scores/time/'+timeStatus, function(scoresFromServer, status){
+			generateListOfTheBest(scoresFromServer);
+		});
+		IconHide(timeStatus, '#tableTimeRow');
 	});
 
 	$('#saveResultsButton').click(function(){
 
-		var score = {username: $('#user-name').val(), steps: counter, time: timer};
+		var score = JSON.stringify({name: $('#user-name').val(), steps: counter, time: timer , level: currentLevel});
 		
 		$.ajax({
 			url: "/scores",
-			type: 'PUT',
-			data: score,
+			type: 'POST',
+			data: {score: score},
 			success: function(res) {
 				showStatictics();
 			} 
