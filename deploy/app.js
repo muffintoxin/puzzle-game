@@ -19,13 +19,9 @@ app.post('/scores', function (req, res){
 app.get('/scores/:sort/:order', function (req, res){
 	var sort = {};
 	sort[req.params.sort] = 1;
-
 	if (req.params.order == "false") {
-		console.log(sort);
 		sort[req.params.sort] = -1;
 	}
-
-	console.log(sort);
 	db.scores.find().sort(sort, function (err, docs) {
 		if (err)
        		res.send(err); 
