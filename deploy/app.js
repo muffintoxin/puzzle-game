@@ -43,6 +43,6 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname +'/public/main.html'));
 });
 
-app.listen(3000, function () {
-  console.log('puzzle listening on port 3000!');
+app.listen(3002, function () {
+  console.log('puzzle listening on port 3002!');
 });
